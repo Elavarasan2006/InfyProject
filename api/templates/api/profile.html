@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edu2Job | Profile</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      background-color: #1e2a38;
+      color: white;
+      padding: 4px 14px; /* 🔹 smaller navbar height */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .navbar h1 {
+      margin: 0;
+      font-size: 18px; /* 🔹 smaller brand text */
+      font-weight: 600;
+    }
+
+    /* 🔹 COMPACT LOGOUT BUTTON */
+    .logout-btn {
+      background: #dc3545;
+      border: none;
+      padding: 2px 8px;      /* smaller height & width */
+      color: white;
+      border-radius: 3px;    /* smaller curve */
+      cursor: pointer;
+      font-size: 12px;       /* smaller text */
+      font-weight: 500;
+      line-height: 1;        /* remove extra vertical spacing */
+      transition: 0.3s;
+    }
+
+    .logout-btn:hover {
+      background: #b02a37;
+      transform: scale(1.05);
+    }
+
+    /* MAIN LAYOUT */
+    .main-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+      margin: 60px auto;
+      max-width: 1100px;
+    }
+
+    /* LEFT CARD */
+    .side-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 30px;
+      text-align: center;
+      width: 35%;
+      transition: 0.3s;
+    }
+
+    .side-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .side-card img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+    }
+
+    .side-card h2 {
+      color: #1e2a38;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .side-card p {
+      color: #555;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* PROFILE FORM */
+    .profile-container {
+      background: white;
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 55%;
+      transition: 0.3s;
+    }
+
+    .profile-container:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+    }
+
+    h2 {
+      text-align: center;
+      color: #1e2a38;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #1e2a38;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      background-color: #1e2a38;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #2a3f58;
+      transform: scale(1.02);
+    }
+
+    .back-btn {
+      display: block;
+      text-align: center;
+      margin-top: 18px;
+      color: #1e2a38;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .back-btn:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <h1>Edu2Job</h1>
+    <button class="logout-btn" onclick="window.location.href='/'">Logout</button>
+  </div>
+
+  <div class="main-container">
+    <!-- LEFT SIDE CARD -->
+    <div class="side-card">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile Avatar" />
+      <h2 id="userName">Welcome, User!</h2>
+      <p>Your professional journey starts here.  
+      Keep your profile updated to get better recommendations.</p>
+    </div>
+
+    <!-- RIGHT SIDE FORM -->
+    <div class="profile-container">
+      <h2>Your Profile</h2>
+
+      <label>Name</label>
+      <input type="text" id="name">
+
+      <label>Email</label>
+      <input type="email" id="email" readonly>
+
+      <label>Degree</label>
+      <input type="text" id="degree">
+
+      <label>Major</label>
+      <input type="text" id="major">
+
+      <label>Experience</label>
+      <textarea id="experience" rows="3"></textarea>
+
+      <button onclick="saveProfile()">Save Changes</button>
+      <a href="/home/" class="back-btn">← Back to Dashboard</a>
+    </div>
+  </div>
+
+  <script>
+    const email = localStorage.getItem("email");
+    document.getElementById("email").value = email || "";
+
+    async function loadProfile() {
+      if (!email) return;
+      try {
+        const res = await fetch(`/api/profile-get/${email}/`);
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById("name").value = data.name || "";
+          document.getElementById("degree").value = data.degree || "";
+          document.getElementById("major").value = data.major || "";
+          document.getElementById("experience").value = data.experience || "";
+          document.getElementById("userName").textContent = data.name
+            ? `Welcome, ${data.name}!`
+            : "Welcome, User!";
+        }
+      } catch (err) {
+        console.error("Error loading profile:", err);
+      }
+    }
+
+    async function saveProfile() {
+      const name = document.getElementById("name").value.trim();
+      const degree = document.getElementById("degree").value.trim();
+      const major = document.getElementById("major").value.trim();
+      const experience = document.getElementById("experience").value.trim();
+
+      const body = { name, email, degree, major, experience };
+
+      try {
+        const res = await fetch("/api/profile-save/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+
+        const data = await res.json();
+        alert(data.message || "Profile saved!");
+      } catch (err) {
+        alert("⚠️ Error saving profile.");
+      }
+    }
+
+    loadProfile();
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

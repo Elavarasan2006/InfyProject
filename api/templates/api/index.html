@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edu2Job | Login or Register</title>
+  <style>
+    :root {
+      --primary: #1d3557;
+      --accent: #f4a261;
+      --bg-light: #f8f9fa;
+      --success: #2a9d8f;
+      --error: #e76f51;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .wrapper {
+      display: flex;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      width: 950px;
+      max-width: 95%;
+    }
+
+    .left-panel {
+      background: var(--primary);
+      color: white;
+      padding: 60px 40px;
+      width: 40%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .left-panel h1 {
+      font-size: 34px;
+      margin-bottom: 20px;
+    }
+
+    .left-panel p {
+      font-size: 15px;
+      color: #d9e4f5;
+    }
+
+    .right-panel {
+      width: 60%;
+      padding: 50px 60px;
+    }
+
+    h2 {
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    input:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 4px rgba(29, 53, 87, 0.3);
+    }
+
+    button {
+      width: 100%;
+      background: var(--accent);
+      border: none;
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #e07a00;
+    }
+
+    .link {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+      color: var(--primary);
+      cursor: pointer;
+    }
+
+    .link:hover {
+      text-decoration: underline;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* ✅ Custom Popup */
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border-radius: 10px;
+      padding: 25px 40px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      z-index: 1000;
+      display: none;
+      max-width: 300px;
+    }
+
+    .popup.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .popup h3 {
+      margin: 0;
+      color: var(--success);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, -60%); }
+      to { opacity: 1; transform: translate(-50%, -50%); }
+    }
+
+    @media (max-width: 850px) {
+      .wrapper {
+        flex-direction: column;
+        width: 95%;
+      }
+      .left-panel {
+        width: 100%;
+        text-align: center;
+      }
+      .right-panel {
+        width: 100%;
+        padding: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrapper">
+    <!-- Left Section -->
+    <div class="left-panel">
+      <h1>Edu2Job</h1>
+      <p>Bridge your education to your dream career.<br>
+         Sign in or create your account to get started.</p>
+    </div>
+
+    <!-- Right Section -->
+    <div class="right-panel">
+
+      <!-- Login Form -->
+      <div id="loginForm">
+        <h2>Sign In</h2>
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="Enter your email">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="Enter your password">
+        <button onclick="handleLogin()">Login</button>
+        <div class="link" onclick="showRegister()">Create Account</div>
+      </div>
+
+      <!-- Register Form -->
+      <div id="registerForm" class="hidden">
+        <h2>Create Account</h2>
+        <label>Full Name</label>
+        <input type="text" id="reg-name" placeholder="Enter your name">
+        <label>Email</label>
+        <input type="email" id="reg-email" placeholder="Enter your email">
+        <label>Profession</label>
+        <input type="text" id="reg-profession" placeholder="e.g., Engineer, Designer, Student">
+        <label>Password</label>
+        <input type="password" id="reg-pass" placeholder="Enter password">
+        <label>Confirm Password</label>
+        <input type="password" id="reg-repass" placeholder="Re-enter password">
+        <button onclick="handleRegister()">Register</button>
+        <div class="link" onclick="showLogin()">Back to Login</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ✅ Success Popup -->
+  <div class="popup" id="popup">
+    <h3 id="popup-message">Success!</h3>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const popup = document.getElementById('popup');
+    const popupMsg = document.getElementById('popup-message');
+
+    function showRegister() {
+      loginForm.classList.add('hidden');
+      registerForm.classList.remove('hidden');
+    }
+
+    function showLogin() {
+      registerForm.classList.add('hidden');
+      loginForm.classList.remove('hidden');
+    }
+
+    function showPopup(msg, color = "#2a9d8f") {
+      popupMsg.textContent = msg;
+      popupMsg.style.color = color;
+      popup.classList.add("show");
+      setTimeout(() => popup.classList.remove("show"), 2000);
+    }
+
+    async function handleLogin() {
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value.trim();
+      if (!email || !password) return showPopup("Please enter all fields.", "#e76f51");
+
+      try {
+        const res = await fetch("/api/login/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          localStorage.setItem("access_token", data.access);
+          localStorage.setItem("refresh_token", data.refresh);
+          localStorage.setItem("username", data.username);
+          localStorage.setItem("email", data.email);
+          showPopup("✅ Login successful!");
+          setTimeout(() => window.location.href = "/home/", 1500);
+        } else {
+          showPopup(data.error || "Invalid credentials", "#e76f51");
+        }
+      } catch (err) {
+        showPopup("Error connecting to server.", "#e76f51");
+      }
+    }
+
+    async function handleRegister() {
+      const name = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const profession = document.getElementById('reg-profession').value.trim();
+      const pass = document.getElementById('reg-pass').value.trim();
+      const repass = document.getElementById('reg-repass').value.trim();
+
+      if (!name || !email || !pass || pass !== repass)
+        return showPopup("Fill all fields correctly.", "#e76f51");
+
+      try {
+        const res = await fetch("/api/register/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password: pass, password2: repass, profession }),
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          showPopup("✅ Registration successful!");
+          setTimeout(showLogin, 1500);
+        } else {
+          showPopup("Registration failed.", "#e76f51");
+        }
+      } catch (err) {
+        showPopup("Error connecting to server.", "#e76f51");
+      }
+    }
+  </script>
+</body>
+</html>
+
+
+

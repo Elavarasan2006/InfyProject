@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edu2Job | Job Prediction</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* --- Navbar --- */
+    .navbar {
+      background-color: #1e2a38;
+      color: white;
+      padding: 10px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .logout-btn {
+      background-color: #e63946;
+      border: none;
+      color: white;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background-color: #d62828;
+    }
+
+    /* --- Container --- */
+    .container {
+      max-width: 700px;
+      margin: 60px auto;
+      background: white;
+      border-radius: 10px;
+      padding: 40px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #1e2a38;
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: #1e2a38;
+      outline: none;
+    }
+
+    .predict-btn {
+      width: 100%;
+      background-color: #1e2a38;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+
+    .predict-btn:hover {
+      background-color: #2a3f58;
+    }
+
+    .result-box {
+      margin-top: 25px;
+      background: #f1f5fa;
+      padding: 20px;
+      border-radius: 10px;
+      display: none;
+    }
+
+    .result-box h3 {
+      margin: 0;
+      color: #1e2a38;
+    }
+
+    .back-btn {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #1e2a38;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .back-btn:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <h1>Edu2Job</h1>
+    <button class="logout-btn" onclick="window.location.href='/'">Logout</button>
+  </div>
+
+  <div class="container">
+    <h2>Job Prediction Dashboard</h2>
+
+    <label>Degree</label>
+    <select id="degree">
+      <option value="">Select Degree</option>
+      <option>B.Tech / BE</option>
+      <option>B.Sc</option>
+      <option>BCA</option>
+      <option>MCA</option>
+      <option>M.Tech</option>
+      <option>MBA</option>
+    </select>
+
+    <label>Major / Specialization</label>
+    <input type="text" id="major" placeholder="e.g., Computer Science, Electrical Engineering">
+
+    <label>CGPA</label>
+    <input type="number" id="cgpa" step="0.01" min="0" max="10" placeholder="Enter your CGPA">
+
+    <label>Skills</label>
+    <textarea id="skills" placeholder="e.g., Python, Data Analysis, Machine Learning"></textarea>
+
+    <button class="predict-btn" onclick="predictJob()">Predict Job Role</button>
+
+    <div class="result-box" id="resultBox">
+      <h3 id="jobResult"></h3>
+      <p id="confidence"></p>
+    </div>
+
+    <a href="/home/" class="back-btn">← Back to Dashboard</a>
+  </div>
+
+  <script>
+    async function predictJob() {
+      const degree = document.getElementById("degree").value.trim();
+      const major = document.getElementById("major").value.trim();
+      const cgpa = document.getElementById("cgpa").value.trim();
+      const skills = document.getElementById("skills").value.trim();
+
+      if (!degree || !major || !cgpa || !skills) {
+        alert("⚠️ Please fill all fields before predicting.");
+        return;
+      }
+
+      // --- Mock Prediction Logic (replace later with ML API)
+      const randomJobs = [
+        { role: "Software Developer", confidence: 92 },
+        { role: "Data Analyst", confidence: 89 },
+        { role: "System Engineer", confidence: 85 },
+        { role: "AI/ML Engineer", confidence: 94 },
+        { role: "Project Manager", confidence: 87 },
+      ];
+      const randomPick = randomJobs[Math.floor(Math.random() * randomJobs.length)];
+
+      // Display the prediction
+      document.getElementById("resultBox").style.display = "block";
+      document.getElementById("jobResult").textContent = `🎯 Predicted Job: ${randomPick.role}`;
+      document.getElementById("confidence").textContent = `Confidence: ${randomPick.confidence}%`;
+    }
+  </script>
+
+</body>
+</html>
+
+
+
+
+
+
