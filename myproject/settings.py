@@ -21,6 +21,7 @@ INSTALLED_APPS = [
 
     'api',
     'predictor',
+    
 ]
 
 MIDDLEWARE = [
@@ -39,7 +40,7 @@ ROOT_URLCONF = 'myproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],  # ← FIXED: Added templates directory
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

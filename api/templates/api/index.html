@@ -244,13 +244,14 @@
       setTimeout(() => popup.classList.remove("show"), 2000);
     }
 
+    // ✅ LOGIN
     async function handleLogin() {
       const email = document.getElementById('login-email').value.trim();
       const password = document.getElementById('login-password').value.trim();
       if (!email || !password) return showPopup("Please enter all fields.", "#e76f51");
 
       try {
-        const res = await fetch("/api/login/", {
+        const res = await fetch("/login/", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),
@@ -273,6 +274,7 @@
       }
     }
 
+    // ✅ REGISTER
     async function handleRegister() {
       const name = document.getElementById('reg-name').value.trim();
       const email = document.getElementById('reg-email').value.trim();
@@ -284,7 +286,7 @@
         return showPopup("Fill all fields correctly.", "#e76f51");
 
       try {
-        const res = await fetch("/api/register/", {
+        const res = await fetch("/register/", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name, email, password: pass, password2: repass, profession }),
@@ -295,7 +297,7 @@
           showPopup("✅ Registration successful!");
           setTimeout(showLogin, 1500);
         } else {
-          showPopup("Registration failed.", "#e76f51");
+          showPopup(data.error || "Registration failed.", "#e76f51");
         }
       } catch (err) {
         showPopup("Error connecting to server.", "#e76f51");
@@ -304,6 +306,7 @@
   </script>
 </body>
 </html>
+
 
 
 
